@@ -42,12 +42,12 @@ const typed = ('typed/full');
 
 module.exports = {
     // first two arguments must be string
-    concat: typed(add, types.string, types.string)
+    concat: typed(add, typed.string, typed.string)
     // first two arguments must be number
-    addNumbers: typed(add, types.number, types.number),
+    addNumbers: typed(add, typed.number, typed.number),
     // first argument must be a number, while second can be ommited
     // but is passed must be a number
-    addThree: typed(add, types.number, types.number.isOptional),
+    addThree: typed(add, typed.number, typed.number.isOptional),
 };
 ```
 
@@ -75,16 +75,16 @@ function complexAdd(x, y) {
 }
 
 // create (string or number) type to use in our definition
-const stringOrNumber = types.oneOfType([
-    types.string,
-    types.number,
+const stringOrNumber = typed.oneOfType([
+    typed.string,
+    typed.number,
 ]);
 
 const addOnlyReturnNumber = typed(complexAdd, [
     // first and second param can be either a number or string
     stringOrNumber, stringOrNumber,
     // but must return a number
-], types.number);
+], typed.number);
 
 addOnlyReturnNumber(2, 2) // returns expected type number (4)
 addOnlyReturnNumber('2', 2) // returns expected type number (4)

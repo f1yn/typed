@@ -83,7 +83,7 @@ const fullTypeWrap = buildTypeWrapper({
 	}
 });
 
-// bind types
-fullTypeWrap.types = types;
+// bind types directly to the fullTypeWrap object
+Object.assign(fullTypeWrap, types, { types });
 
 module.exports = fullTypeWrap;
