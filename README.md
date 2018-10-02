@@ -2,6 +2,10 @@
 
 **Simplistic and minimal runtime type checking system for Node.js applications.**
 
+[![Build Status](https://travis-ci.org/flynnham/typed.svg?branch=master)](https://travis-ci.org/flynnham/typed)
+[![dependencies Status](https://david-dm.org/flynnham/typed/status.svg)](https://david-dm.org/flynnham/typed)
+[![devDependencies Status](https://david-dm.org/flynnham/typed/dev-status.svg)](https://david-dm.org/flynnham/typed?type=dev)
+
 Typed is a minimal wrapper based type checking library for JavaScript to ensure user/developer facing functions are passed (and also return) their expected types. This is done in an attempt to reduce the amount human error in runtime environments.
 
 ## Installing
@@ -36,13 +40,13 @@ are provided
 const typed = ('typed/full');
 
 module.exports = {
-	// first two arguments must be string
-	concat: typed(add, types.string, types.string)
-	// first two arguments must be number
-	addNumbers: typed(add, types.number, types.number),
-	// first argument must be a number, while second can be ommited
-	// but is passed must be a number
-	addThree: typed(add, types.number, types.number.isOptional),
+    // first two arguments must be string
+    concat: typed(add, types.string, types.string)
+    // first two arguments must be number
+    addNumbers: typed(add, types.number, types.number),
+    // first argument must be a number, while second can be ommited
+    // but is passed must be a number
+    addThree: typed(add, types.number, types.number.isOptional),
 };
 ```
 
@@ -58,27 +62,27 @@ this will ensure that input error won't return any unwanted inputs.
 
 ```js
 function complexAdd(x, y) {
-	if (x === 0) {
-		// zero sucks so let's do something awful
-		// mostly for demonstrative purposes, I don't recommended writing
-		// any production code like this ;)
-		return null
-	}
+    if (x === 0) {
+    // zero sucks so let's do something awful
+        // mostly for demonstrative purposes, I don't recommended writing
+        // any production code like this ;)
+        return null
+    }
 
-	// return forced integer add (base10)
-	return parseInt(x, 10) + parseInt(y, 10);
+    // return forced integer add (base10)
+    return parseInt(x, 10) + parseInt(y, 10);
 }
 
 // create (string or number) type to use in our definition
 const stringOrNumber = types.oneOfType([
-	types.string,
-	types.number,
+    types.string,
+    types.number,
 ]);
 
 const addOnlyReturnNumber = typed(complexAdd, [
-	// first and second param can be either a number or string
-	stringOrNumber, stringOrNumber,
-	// but must return a number
+    // first and second param can be either a number or string
+    stringOrNumber, stringOrNumber,
+    // but must return a number
 ], types.number);
 
 addOnlyReturnNumber(2, 2) // returns expected type number (4)
@@ -125,11 +129,11 @@ const add = (x, y) => x + y
 
 // ensure first two paramaters meet expectation isNumber
 // shorthand syntax
-const addNumbers =  typed(add, 'isNumber', 'isNumber');
+const addNumbers = typed(add, 'isNumber', 'isNumber');
 
 // ensure that the parameter passed meets either expectation
 const numberOrString = {
-	anyOf: ['isNumber', 'isString'],
+    anyOf: ['isNumber', 'isString'],
 };
 
 // longhand syntax
