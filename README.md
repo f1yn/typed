@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/flynnham/typed.svg?branch=master)](https://travis-ci.org/flynnham/typed)
 [![dependencies Status](https://david-dm.org/flynnham/typed/status.svg)](https://david-dm.org/flynnham/typed)
 [![devDependencies Status](https://david-dm.org/flynnham/typed/dev-status.svg)](https://david-dm.org/flynnham/typed?type=dev)
+[![peerDependencies Status](https://david-dm.org/flynnham/typed/peer-status.svg)](https://david-dm.org/flynnham/typed?type=peer)
 
 Typed is a minimal wrapper based type checking library for JavaScript to ensure user/developer facing functions are passed (and also return) their expected types. This is done in an attempt to reduce the amount human error in runtime environments.
 
