@@ -1,0 +1,21 @@
+{
+  "name": "typed",
+  "version": "0.0.1",
+  "description": "git push -u origin master",
+  "main": "basic.js",
+  "scripts": {
+    "build-lodash": "rolldash -v 4.17.5 -o ./lib/lodashTypes.js",
+    "build": "npm run build-lodash",
+    "test": "mocha test/spec.js"
+  },
+  "author": "Flynn Buckingham",
+  "license": "MIT",
+  "peerDependencies": {
+    "js-prop-types": "flynnham/js-prop-types"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "rolldash": "flynnham/rolldash"
+  }
+}

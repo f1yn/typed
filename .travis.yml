@@ -1,0 +1,5 @@
+language: node_js
+node_js:
+ - "lts/*"
+install:
+ - npm i && npm i --no-save flynnham/js-prop-types
