@@ -8,6 +8,11 @@
     "build": "npm run build-lodash",
     "test": "mocha test/spec.js"
   },
+  "files": [
+    "full.js",
+    "basic.js",
+    "lib/"
+  ],
   "author": "Flynn Buckingham",
   "license": "MIT",
   "peerDependencies": {
