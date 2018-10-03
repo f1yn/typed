@@ -3,11 +3,13 @@ const buildTypeWrapper = require('./lib/base');
 const types = require('js-prop-types');
 const { checkValueType } = types;
 
+const MATCH_DEF = /`([a-z0-9\[\]]+)`/g
+
 function parseJsPropTypesError(message, isResolving = false) {
 	const values = [];
 
 	if (/is marked as required/.test(message)) {
-		message.replace(/`([a-z]+)`/g, (m, m1) => values.push(m1));
+		message.replace(MATCH_DEF, (m, m1) => values.push(m1));
 
 		return isResolving ?
 			`expected a return value, but instead returned "${values[2]}"` :
@@ -15,13 +17,15 @@ function parseJsPropTypesError(message, isResolving = false) {
 	}
 
 	if (/^Invalid param/.test(message)) {
-		message.replace(/`([a-z]+)`/g, (m, m1) => values.push(m1));
+		message.replace(MATCH_DEF, (m, m1) => values.push(m1));
+
+		// const isComplex = /supplied to/.test(message);
 
 		return isResolving ?
-			`expected a return value of type "${values[3]
+			`(${values[0]}) expected a return value of type "${values[3]
 			}" but instead returned "${values[1]}"` :
 
-			`expected an input value of type "${values[3]
+			`(${values[0]}) expected an input value of type "${values[3]
 			}" but instead received "${values[1]}"`
 	}
 
@@ -74,7 +78,7 @@ const fullTypeWrap = buildTypeWrapper({
 						// something else went wrong
 						throw e;
 					}
-					throw new TypeError(message);
+					throw new TypeError(`${methodtoWrap.name} ${message}`);
 				}
 			}
 
