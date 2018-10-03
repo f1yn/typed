@@ -1,6 +1,6 @@
 
 const buildTypeWrapper = require('./lib/base');
-const types = require('js-prop-types');
+const types = require('@o3/prop-types');
 const { checkValueType } = types;
 
 const MATCH_DEF = /`([a-z0-9\[\]]+)`/g
@@ -32,54 +32,68 @@ function parseJsPropTypesError(message, isResolving = false) {
 	return null;
 }
 
+function checkValueTypeCaller(baseValue, definition, isResolving = false) {
+	// because of quirkiness we need to cast the undefined type to
+	// it's objective form so the modded prop-types can detect it
+	const value = typeof baseValue === 'undefined' ? undefined : baseValue;
+
+	try {
+		checkValueType(value, definition);
+		return null;
+	} catch (e) {
+		const message = parseJsPropTypesError(e.message, isResolving);
+		if (!message) {
+			// something else went wry: bubble up the exception
+			throw e;
+		}
+		return message;
+	}
+}
+
 const fullTypeWrap = buildTypeWrapper({
 	validateDefinitions(definition, argumentNum, methodName) {
 		if (typeof definition !== 'function') {
 			throw new TypeError(`${methodName} (${argumentNum
-			}) improper validator was provided, expected "function" but received ${typeof definition}`);
+			}) improper validator was provided, expected "function" but received ${
+			typeof definition}`);
 		}
 	},
 	buildInvocator(methodtoWrap, definitions, resolvesTo) {
 		const totalChecks = definitions.length;
 
-		return function typedInvocation(...args) {
-			// mutate the argument passthough with a null prop
+		/**
+		 * Called when method returns a Promise-like object
+		 * @param  {Promise} resultPromise The promise to resolve
+		 * @param  {definition} resolvesTo the definition expected
+		 * @return {Promise} Resolves with result when resultPromise completes
+		 */
+		async function resolveAsyncInvocation(resultPromise, resolvesTo) {
+			// wait for promise to resolve and then validate
+			const result = await resultPromise;
+			const errorMessage = checkValueTypeCaller(result, resolvesTo);
+			if (errorMessage) throw new TypeError(`${methodtoWrap.name} ${errorMessage}`);
+			return result;
+		}
 
-			// const args = rawArgs.length ? rawArgs : [undefined];
+		return function typedInvocation(...args) {
 			// forward count (instead of forEach to reduce the amount of bulk
 			// in stack trace - which is a bad habit I'm trying to kill with this)
 			let index = 0;
 			for (index; index < totalChecks; index++) {
-				// because of quirkiness we need to cast the undefined type to
-				// it's objective form so the modded prop-types can detect it
-				const value = typeof args[index] === 'undefined' ? undefined : args[index];
-
-				try {
-					checkValueType(value, definitions[index]);
-				} catch (e) {
-					const message = parseJsPropTypesError(e.message);
-					if (!message) {
-						// something else went wry
-						throw e;
-					}
-					throw new TypeError(`${methodtoWrap.name} (argument ${index + 1}) ${message}`);
-				}
+				const errorMessage = checkValueTypeCaller(args[index], definitions[index]);
+				if (errorMessage) throw new TypeError(`${methodtoWrap.name} (argument ${index + 1}) ${errorMessage}`);
 			}
 
 			const result = methodtoWrap(...args);
 
 			// conditional resolve
 			if (resolvesTo) {
-				try {
-					checkValueType(result, resolvesTo);
-				} catch (e) {
-					const message = parseJsPropTypesError(e.message, true);
-					if (!message) {
-						// something else went wrong
-						throw e;
-					}
-					throw new TypeError(`${methodtoWrap.name} ${message}`);
+				if (typeof result.then === 'function') {
+					// hand over to async resolver
+					return resolveAsyncInvocation(result, resolvesTo);
 				}
+				const errorMessage = checkValueTypeCaller(result, resolvesTo, true);
+				if (errorMessage) throw new TypeError(`${methodtoWrap.name} ${errorMessage}`);
 			}
 
 			return result;

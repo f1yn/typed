@@ -1,7 +1,7 @@
 {
-  "name": "typed",
-  "version": "0.0.1",
-  "description": "git push -u origin master",
+  "name": "@o3/typed",
+  "version": "0.1.2",
+  "description": "Simplistic and minimal runtime type checking system for Node.js applications",
   "main": "basic.js",
   "scripts": {
     "build-lodash": "rolldash -v 4.17.5 -o ./lib/lodashTypes.js",
@@ -11,16 +11,22 @@
   "files": [
     "full.js",
     "basic.js",
-    "lib/"
+    "lib/",
+    "LICENSE",
+    "README.md"
   ],
   "author": "Flynn Buckingham",
+  "repository": "flynnham/typed",
   "license": "MIT",
   "peerDependencies": {
-    "js-prop-types": "flynnham/js-prop-types"
+    "@o3/prop-types": "0.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
-    "rolldash": "flynnham/rolldash"
+    "rolldash": "^0.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

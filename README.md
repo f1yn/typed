@@ -3,6 +3,7 @@
 **Simplistic and minimal runtime type checking system for Node.js applications.**
 
 [![Build Status](https://travis-ci.org/flynnham/typed.svg?branch=master)](https://travis-ci.org/flynnham/typed)
+[![npm](https://img.shields.io/npm/v/@o3/typed.svg)](https://www.npmjs.com/package/@o3/typed)
 [![dependencies Status](https://david-dm.org/flynnham/typed/status.svg)](https://david-dm.org/flynnham/typed)
 [![devDependencies Status](https://david-dm.org/flynnham/typed/dev-status.svg)](https://david-dm.org/flynnham/typed?type=dev)
 [![peerDependencies Status](https://david-dm.org/flynnham/typed/peer-status.svg)](https://david-dm.org/flynnham/typed?type=peer)
@@ -13,9 +14,9 @@ Typed is a minimal wrapper based type checking library for JavaScript to ensure 
 
 ### via npm
 ```bash
-npm i -S flynnham/typed
+npm i -S @o3/typed
 # For fully featured runtime checking also install:
-npm i -S flynnham/js-prop-types
+npm i -S @o3/prop-types
 ```
 
 ## How to use
@@ -38,7 +39,7 @@ specific input types and throw type errors when improper values
 are provided
 
 ```js
-const typed = ('typed/full');
+const typed = ('@o3/typed/full');
 
 module.exports = {
     // first two arguments must be string
@@ -124,7 +125,7 @@ highly strict nature.
 #### Example
 
 ```js
-const typed = require('typed');
+const typed = require('@o3/typed');
 
 const add = (x, y) => x + y
 
