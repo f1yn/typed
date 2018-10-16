@@ -1,6 +1,6 @@
 {
   "name": "@o3/typed",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Simplistic and minimal runtime type checking system for Node.js applications",
   "main": "basic.js",
   "scripts": {
@@ -28,5 +28,15 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "keywords": [
+    "type",
+    "types",
+    "system",
+    "checker",
+    "checking",
+    "type-system",
+    "validation",
+    "primitive"
+  ]
 }

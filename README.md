@@ -15,7 +15,7 @@ Typed is a minimal wrapper based type checking library for JavaScript to ensure 
 ### via npm
 ```bash
 npm i -S @o3/typed
-# For fully featured runtime checking also install:
+# For fully featured runtime checking also install
 npm i -S @o3/prop-types
 ```
 
@@ -39,7 +39,7 @@ specific input types and throw type errors when improper values
 are provided
 
 ```js
-const typed = ('@o3/typed/full');
+const typed = require('@o3/typed/full');
 
 module.exports = {
     // first two arguments must be string
@@ -47,13 +47,13 @@ module.exports = {
     // first two arguments must be number
     addNumbers: typed(add, typed.number, typed.number),
     // first argument must be a number, while second can be ommited
-    // but is passed must be a number
-    addThree: typed(add, typed.number, typed.number.isOptional),
+    // but if passed must be a number
+    addThree: addOptional(add, typed.number, typed.number.isOptional),
 };
 ```
 
 > NOTE: **typed/full** uses a dependency called
-**[js-prop-types](https://github.com/flynnham/js-prop-types)**, which
+**[@o3/prop-types](https://github.com/flynnham/js-prop-types)**, which
 needs to be installed as a peer dependency. A more minimal
 version is exported at root level, which does not require this
 dependency, and instead opts to use a minimized lodash type build.
@@ -96,7 +96,7 @@ addOnlyReturnNumber(0, 2) // throws due to invalid return value 'null'
 
 All the above examples are written in the full syntax, which requires the
 additional single dependency of
-[js-prop-types](https://github.com/flynnham/js-prop-types), an adaptation of the Facebook
+[@o3/prop-types](https://github.com/flynnham/js-prop-types), an adaptation of the Facebook
 React prop-types library. A more detailed write up of accepted syntax will
 come eventually, but I highly recommend you stick with [their official
 documentation here](https://github.com/facebook/prop-types/blob/master/README.md).
@@ -109,13 +109,12 @@ passing `types.typeName.isOptional` will allow voided values to be passed.
 ### Basic format (minimal, no dependencies required)
 
 While I'm making progress to reduce the amount of redundant abstractions within
-the [js-prop-types](https://github.com/flynnham/js-prop-types) library, by default
+the [@o3/prop-types](https://github.com/flynnham/js-prop-types) library, by default
 this library exports a minimal version of the shown syntax, which relies on a
 minimized and tree-shaken port of all of [lodash](https://lodash.com/)'s known
 `is{Type}` exports.
 
-The benefits of using this syntax are more strict type checking (verses
-[js-prop-types](https://github.com/flynnham/js-prop-types))
+The benefits of using this syntax are more strict type checking, since
 needing to rely on primitive checking that can sometimes be prone to strange quirks.
 The downside is that optional arguments are not really well supported due to it's
 highly strict nature.
@@ -127,7 +126,7 @@ highly strict nature.
 ```js
 const typed = require('@o3/typed');
 
-const add = (x, y) => x + y
+const add = (x, y) => x + y;
 
 // ensure first two paramaters meet expectation isNumber
 // shorthand syntax
